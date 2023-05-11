@@ -11,8 +11,11 @@ class ViewController: UIViewController, EditDelegate {
     
     let imgOn = UIImage(named: "lamp_on.png")
     let imgOff = UIImage(named: "lamp_off.png")
+    let scale:CGFloat = 1.5
     
     var isOn = true
+    var isZoom = true
+    var newWidth:CGFloat?, newHeight:CGFloat?
 
     @IBOutlet var txMessage: UITextField!
     @IBOutlet var imgView: UIImageView!
@@ -32,6 +35,7 @@ class ViewController: UIViewController, EditDelegate {
         }
         editViewController.textMessage = txMessage.text!
         editViewController.isOn = isOn
+        editViewController.isZoom = isZoom
         editViewController.delegate = self
     }
     
@@ -49,5 +53,27 @@ class ViewController: UIViewController, EditDelegate {
         }
     }
     
+    func didImageZoomDone(_ controller: EditViewController, isZoom: Bool) {
+        if isZoom {
+            if self.isZoom == true {
+                newWidth = imgView.frame.width
+                newHeight = imgView.frame.height
+            } else {
+                newWidth = imgView.frame.width/scale
+                newHeight = imgView.frame.height/scale
+                self.isZoom = true
+            }
+        } else {
+            if self.isZoom == false {
+                newWidth = imgView.frame.width
+                newHeight = imgView.frame.height
+            } else {
+                newWidth = imgView.frame.width*scale
+                newHeight = imgView.frame.height*scale
+                self.isZoom = false
+            }
+        }
+        imgView.frame.size = CGSize(width: newWidth!, height: newHeight!)
+    }
+    
 }
-
